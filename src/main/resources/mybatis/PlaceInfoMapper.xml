@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhanghf.mapper.PlaceInfoMapper">
+
+
+    <select id="getNodeInfo" resultType="com.zhanghf.vo.xml.NodeInfoXmlVO">
+        select z.node_name NodeName,
+               x.user_name Author,
+               concat(z.node_name, '意见') Type,
+               '通过' Body,
+               concat(x.end_time, '') Modified
+          from wf_task_his                 x,
+               wf_matter_process_info      y,
+               wf_matter_process_node_info z
+         where x.mat_proc_id = y.id
+           and x.mat_proc_id = z.mat_proc_id
+           and x.node_id = z.node_id
+           and x.work_order_no = 'f925fc14-e7fa-4ad8-a2ca-331910f7a395'
+    </select>
+
+    <select id="getBaseInfo" resultType="com.zhanghf.vo.xml.BaseInfoXmlVO">
+            select '' DocumentNumber,
+                   '' RetentionPeriod,
+                   '' ArchiveTime,
+                   '浙江省医疗保障事业管理服务中心' DepartmentName,
+                   '经办服务指导科' LeadDepartment,
+                   z.contact_name ApplyName,
+                   z.contact_tel_no Mobile,
+                   z.contact_tel_no Phone,
+                   z.address Address,
+                   if(z.contact_card_type = '31', '身份证', '其他') CardType,
+                   z.contact_card_no ContactedCard,
+                   z.legal_man LegalMan,
+                   '办件名称' ProjectName,
+                   '省医疗保障局' ReceiveDepartment,
+                   '受理（立案）时间' ReceiveTime,
+                   concat(x.end_time, '') TransactTime,
+                   y.proj_id ProjectId,
+                   case n.mat_type
+                     when '00' then
+                      '即办件'
+                     when '01' then
+                      '承诺件'
+                     else
+                      '其他'
+                   end ServiceType,
+                   case x.bus_status
+                     when '07' then
+                      '不予受理'
+                     when '10' then
+                      '正常办结'
+                     when '08' then
+                      '转报办结'
+                     else
+                      '作废办结'
+                   end Result,
+                   '0' ResultCode,
+                   m.local_inner_code TaskCode,
+                   ext.version_number TaskVersion,
+                   substr(n.service_code, 1, instr(n.service_code, '-') - 1) TaskType
+              from wf_task_his            x,
+                   acceptance_mask_list   y,
+                   acceptance_main_info   z,
+                   wf_matter_process_info m,
+                   inner_matter_info      n,
+                   ext_matter_info        ext
+             where x.work_order_no = y.work_order_no
+               and x.work_order_no = z.work_order_no
+               and x.mat_proc_id = m.id
+               and m.local_inner_code = n.local_inner_code
+               and m.local_inner_code = ext.local_inner_code
+               and x.finish_state = 1
+               and x.work_order_no = 'f925fc14-e7fa-4ad8-a2ca-331910f7a395'
+    </select>
+</mapper>
