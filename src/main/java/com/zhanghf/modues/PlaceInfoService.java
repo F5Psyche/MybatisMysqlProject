@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.zhanghf.mapper.PlaceInfoMapper;
 import com.zhanghf.mapper.WfUserSignMapper;
 import com.zhanghf.po.WfUserSign;
+import com.zhanghf.vo.archives.BaseInfoVO;
 import com.zhanghf.vo.xml.BaseInfoXmlVO;
 import com.zhanghf.vo.xml.NodeInfoXmlVO;
 import lombok.extern.slf4j.Slf4j;
@@ -56,5 +57,9 @@ public class PlaceInfoService {
             });
             return ids;
         }
+    }
+
+    public BaseInfoVO baseInfoQuery() {
+        return placeInfoMapper.baseInfoQuery();
     }
 }

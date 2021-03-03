@@ -7,6 +7,7 @@ import com.zhanghf.modues.PlaceInfoService;
 import com.zhanghf.util.HttpConnectionUtils;
 import com.zhanghf.util.XmlUtils;
 import com.zhanghf.vo.ResultVo;
+import com.zhanghf.vo.archives.BaseInfoVO;
 import com.zhanghf.vo.xml.BaseInfoXmlVO;
 import com.zhanghf.vo.xml.NodeInfoXmlVO;
 import com.zhanghf.vo.xml.XmlVO;
@@ -75,50 +76,42 @@ public class ExternalDoorController {
                 "fileMD5", XmlUtils.fileToMd5(uuid, nodeFilePath, ".xml"))));
 
         result.add(new JSONObject(ImmutableMap.of(
-                "fileName", "参保人员转外就医备案表.jpg",
-                "kind", "行政确认申报材料/《基本医疗保险参保人员转外就医备案表》",
+                "fileName", "报告.jpg",
+                "kind", "行政确认申报材料/《基本医疗保险参保人员享受规定（特殊慢性）病种待遇备案表》或确诊的病理切片报告或出院记录或病历一份",
                 "filelocation", "http://ybj.zjzwfw.gov.cn:10540/openapiApp/download?key=bizimg/rdm/1607400437204FgX.jpg",
                 "fileMD5", XmlUtils.fileToMd5(uuid, "http://ybj.zjzwfw.gov.cn:10540/openapiApp/download?key=bizimg/rdm/1607400437204FgX.jpg", ".jpg"))));
-
-//        result.add(new JSONObject(ImmutableMap.of(
-//                "fileName", "参保表.jpg",
-//                "kind", "行政确认申报材料/《基本医疗保险参保人员转外就医备案表》",
-//                "filelocation", "http://ybj.zjzwfw.gov.cn:10540/openapiApp/download?key=bizimg/rdm/1607400437204FgX.jpg",
-//                "fileMD5", XmlUtils.fileToMd5(uuid, "http://ybj.zjzwfw.gov.cn:10540/openapiApp/download?key=bizimg/rdm/1607400437204FgX.jpg", ".jpg"))));
-
-
-//        result.add(new JSONObject(ImmutableMap.of(
-//                "fileName", "备案表.jpg",
-//                "kind", "行政确认申报材料/《基本医疗保险参保人员转外就医备案表》",
-//                "filelocation", "http://ybj.zjzwfw.gov.cn:10540/openapiApp/download?key=bizimg/rdm/1607400437204FgX.jpg",
-//                "fileMD5", XmlUtils.fileToMd5(uuid, "http://ybj.zjzwfw.gov.cn:10540/openapiApp/download?key=bizimg/rdm/1607400437204FgX.jpg", ".jpg"))));
-
-
-        result.add(new JSONObject(ImmutableMap.of(
-                "fileName", "基本医疗保险就医备案表.jpg",
-                "kind", "行政确认申报材料/《基本医疗保险参保人员转外就医备案表》",
-                "filelocation", "http://ybj.zjzwfw.gov.cn:10540/openapiApp/download?key=bizimg/rdm/1607400437204FgX.jpg",
-                "fileMD5", XmlUtils.fileToMd5(uuid, "http://ybj.zjzwfw.gov.cn:10540/openapiApp/download?key=bizimg/rdm/1607400437204FgX.jpg", ".jpg"))));
-
-
-//        result.add(new JSONObject(ImmutableMap.of(
-//                "fileName", "转外备案表.jpg",
-//                "kind", "行政确认申报材料/《基本医疗保险参保人员转外就医备案表》",
-//                "filelocation", "http://ybj.zjzwfw.gov.cn:10540/openapiApp/download?key=bizimg/rdm/1607400437204FgX.jpg",
-//                "fileMD5", XmlUtils.fileToMd5(uuid, "http://ybj.zjzwfw.gov.cn:10540/openapiApp/download?key=bizimg/rdm/1607400437204FgX.jpg", ".jpg"))));
-
         result.add(new JSONObject(ImmutableMap.of(
                 "fileName", "身份证.jpg",
-                "kind", "行政确认申报材料/本人社会保障卡或有效身份证",
+                "kind", "行政确认申报材料/本人社会保障卡或有效身份证件（现场办理需提供）",
+                "filelocation", "http://ybj.zjzwfw.gov.cn:10540/openapiApp/download?key=bizimg/rdm/1607400437204FgX.jpg",
+                "fileMD5", XmlUtils.fileToMd5(uuid, "http://ybj.zjzwfw.gov.cn:10540/openapiApp/download?key=bizimg/rdm/1607400437204FgX.jpg", ".jpg"))));
+
+        result.add(new JSONObject(ImmutableMap.of(
+                "fileName", "照片.jpg",
+                "kind", "行政确认申报材料/一寸免冠近照一张",
                 "filelocation", "http://ybj.zjzwfw.gov.cn:10540/openapiApp/download?key=bizimg/rdm/1607400442503s4F.jpg",
                 "fileMD5", XmlUtils.fileToMd5(uuid, "http://ybj.zjzwfw.gov.cn:10540/openapiApp/download?key=bizimg/rdm/1607400442503s4F.jpg", ".jpg"))));
+
+        result.add(new JSONObject(ImmutableMap.of(
+                "fileName", "病历.jpg",
+                "kind", "行政确认申报材料/确诊的病理切片报告或出院记录或病历一份",
+                "filelocation", "http://ybj.zjzwfw.gov.cn:10540/openapiApp/download?key=bizimg/rdm/1607400442503s4F.jpg",
+                "fileMD5", XmlUtils.fileToMd5(uuid, "http://ybj.zjzwfw.gov.cn:10540/openapiApp/download?key=bizimg/rdm/1607400442503s4F.jpg", ".jpg"))));
+
+
         List<String> params = Lists.newArrayList();
-        params.add("330000201208650266947");
-        params.add("b5a04a9f-8c2e-4376-8422-fffd00b7382e");
+
+
+        BaseInfoVO info = placeInfoService.baseInfoQuery();
+        //事项流水号
+        params.add(info.getProjectId());
+
+        //事项唯一码
+        params.add(info.getLocalInnerCode());
         params.add("2020");
         params.add(result.toString());
         params.add(Lists.newArrayList("行政确认申报材料").toString());
-        params.add(Lists.newArrayList("《基本医疗保险参保人员转外就医备案表》", "本人社会保障卡或有效身份证（现场办理需提供）").toString());
+        params.add(Lists.newArrayList("《基本医疗保险参保人员享受规定（特殊慢性）病种待遇备案表》或确诊的病理切片报告或出院记录或病历一份", "本人社会保障卡或有效身份证件（现场办理需提供）", "一寸免冠近照一张", "确诊的病理切片报告或出院记录或病历一份").toString());
 
         JSONObject condition = new JSONObject();
         condition.put("params", params);

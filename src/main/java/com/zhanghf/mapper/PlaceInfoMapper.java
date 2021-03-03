@@ -1,5 +1,6 @@
 package com.zhanghf.mapper;
 
+import com.zhanghf.vo.archives.BaseInfoVO;
 import com.zhanghf.vo.xml.BaseInfoXmlVO;
 import com.zhanghf.vo.xml.NodeInfoXmlVO;
 
@@ -13,16 +14,22 @@ import java.util.List;
 public interface PlaceInfoMapper {
 
     /**
-     * 获取环节信息
+     * 获取环节信息xml
      *
      * @return
      */
     List<NodeInfoXmlVO> getNodeInfo();
 
     /**
-     * 获取基本信息
+     * 获取基本信息xml
      *
      * @return
      */
     List<BaseInfoXmlVO> getBaseInfo();
+
+    /**
+     * 基本信息
+     * @return
+     */
+    BaseInfoVO baseInfoQuery();
 }

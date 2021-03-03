@@ -15,7 +15,7 @@
          where x.mat_proc_id = y.id
            and x.mat_proc_id = z.mat_proc_id
            and x.node_id = z.node_id
-           and x.work_order_no = 'f925fc14-e7fa-4ad8-a2ca-331910f7a395'
+           and x.work_order_no = 'd76af73a-e213-412e-8cee-93000108b89b'
     </select>
 
     <select id="getBaseInfo" resultType="com.zhanghf.vo.xml.BaseInfoXmlVO">
@@ -70,6 +70,18 @@
                and m.local_inner_code = n.local_inner_code
                and m.local_inner_code = ext.local_inner_code
                and x.finish_state = 1
-               and x.work_order_no = 'f925fc14-e7fa-4ad8-a2ca-331910f7a395'
+               and x.work_order_no = 'd76af73a-e213-412e-8cee-93000108b89b'
+    </select>
+
+
+    <select id="baseInfoQuery" resultType="com.zhanghf.vo.archives.BaseInfoVO">
+        select wmpi.local_inner_code localInnerCode, aml.proj_id projectId
+          from wf_task_his            wth,
+               wf_matter_process_info wmpi,
+               acceptance_mask_list   aml
+         where wth.mat_proc_id = wmpi.id
+           and wth.work_order_no = aml.work_order_no
+           and wth.finish_state = 1
+           and wth.work_order_no = 'd76af73a-e213-412e-8cee-93000108b89b'
     </select>
 </mapper>
